@@ -1,0 +1,211 @@
+Requirements Specification Document
+
+1. Project Overview
+
+1.1 Introduction
+
+The goal of this project is to develop a cross-platform mobile application similar to the Domino’s app using Expo. The app will provide users with an easy-to-use interface for ordering food, tracking orders, managing accounts, and accessing promotional deals.
+
+1.2 Objectives
+
+Develop a fully functional, user-friendly food ordering app.
+
+Ensure seamless performance across iOS and Android using Expo.
+
+Provide real-time order tracking and notifications.
+
+Integrate secure payment options.
+
+Implement a robust admin panel for managing orders and menu items.
+
+2. Features & Functional Requirements
+
+2.1 User Authentication
+
+Sign up and login (Email, Phone, Social login - Google, Apple, Facebook)
+
+Password reset and account recovery
+
+User profile management (name, address, phone, payment details, order history)
+
+2.2 Home Screen
+
+Display featured items and promotional offers
+
+Quick access to popular categories
+
+Search and filter options for food items
+
+2.3 Menu & Ordering System
+
+Browse menu by categories (Pizza, Sides, Drinks, etc.)
+
+Customize items (size, toppings, crust type, extra cheese, etc.)
+
+Add items to cart
+
+View order summary before checkout
+
+2.4 Cart & Checkout
+
+Modify cart items (increase/decrease quantity, remove items)
+
+Apply promo codes and discounts
+
+Select delivery or pickup option
+
+Choose preferred delivery time
+
+Enter delivery address or select saved address
+
+Payment methods: Credit/Debit card, Apple Pay, Google Pay, PayPal
+
+Confirm order and receive order summary
+
+2.5 Order Tracking
+
+Live order status updates (Order Received, Preparing, Out for Delivery, Delivered)
+
+Estimated delivery time
+
+Live location tracking of delivery driver
+
+Push notifications for status updates
+
+2.6 Customer Support
+
+In-app chat support
+
+Call support option
+
+FAQs and help section
+
+2.7 Account & User Preferences
+
+View past orders and reorder
+
+Save favorite items
+
+Manage addresses and payment methods
+
+Update personal information
+
+2.8 Promotions & Loyalty Program
+
+Display ongoing promotions and special deals
+
+Referral program integration
+
+Earn and redeem loyalty points
+
+2.9 Admin Panel (Web-Based)
+
+Manage menu items and prices
+
+View and manage orders in real-time
+
+Manage users and delivery personnel
+
+Generate sales and user engagement reports
+
+3. Technical Requirements
+
+3.1 Tech Stack
+
+Framework: React Native with Expo
+
+State Management: Redux / Context API
+
+Backend: NestJS with PostgreSQL / Firebase
+
+Authentication: Firebase Authentication / Supabase
+
+Payments: Stripe, PayPal, Google Pay, Apple Pay
+
+Real-time Tracking: Firebase Firestore / WebSockets
+
+Push Notifications: Expo Notifications / Firebase Cloud Messaging
+
+3.2 API Integrations
+
+Google Maps API for location services
+
+Payment Gateway API (Stripe, PayPal, etc.)
+
+Firebase for authentication and real-time database
+
+Twilio API for SMS notifications
+
+3.3 Security & Compliance
+
+Encrypted user data storage
+
+Secure payment processing with PCI-DSS compliance
+
+GDPR compliance for user data protection
+
+4. Deployment Plan
+
+4.1 Development & Testing
+
+Phase 1: UI/UX Design and Wireframing
+
+Phase 2: API Development and Integration
+
+Phase 3: Frontend and Backend Development
+
+Phase 4: Beta Testing and Bug Fixes
+
+Phase 5: Deployment to App Store and Google Play
+
+4.2 Post-Launch Maintenance
+
+Regular updates and feature enhancements
+
+Performance monitoring and bug fixes
+
+User feedback implementation
+
+Website Page Structure
+1. Home Page
+Hero section with a call-to-action (Download App, Order Now)
+Featured promotions & deals
+How it works (Ordering, Delivery, Tracking)
+Testimonials or customer reviews
+Footer (Links to social media, contact, FAQs, legal pages)
+2. Menu Page
+Category filters (Pizza, Sides, Drinks, Desserts, etc.)
+Search functionality
+Individual product pages with descriptions, pricing, and customization options
+Add to cart functionality
+3. Order Tracking Page
+Input order ID or login to view live tracking
+Order status updates (Received, Preparing, Out for Delivery, Delivered)
+Estimated delivery time
+Live map tracking
+4. About Us Page
+Company background
+Mission and values
+Store locations (if applicable)
+5. Contact Us Page
+Support contact form
+Live chat widget (if implemented)
+Customer support phone number & email
+6. FAQs Page
+Common questions regarding orders, delivery, payments, and app usage
+7. User Account Pages
+7.1 Login / Signup
+Email, phone, or social login options
+7.2 Profile Dashboard
+View and edit personal details
+Manage saved addresses and payment methods
+View past orders and reorder
+8. Admin Panel (For Store Owners & Managers)
+Orders Management: View and update order statuses
+Menu Management: Add/edit/remove menu items
+User Management: Manage customer accounts and delivery personnel
+Analytics & Reports: View sales, user activity, and performance insights
+9. Terms & Privacy Policy Pages
+Terms of Service
+Privacy Policy (GDPR compliance)
+
