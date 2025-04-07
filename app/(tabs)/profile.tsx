@@ -14,6 +14,7 @@ import {
     logoutUser
 } from '@/app/redux';
 import PersonalInfoModal from '@/components/PersonalInfoModal';
+import { router } from 'expo-router';
 
 export default function ProfileScreen() {
     const dispatch = useAppDispatch();
@@ -124,7 +125,7 @@ export default function ProfileScreen() {
 
                         <TouchableOpacity
                             style={styles.menuItem}
-                            onPress={navigateToPaymentMethods}
+                            onPress={() => router.push('/profile/payment-methods' as any)}
                         >
                             <View style={styles.menuItemIcon}>
                                 <Ionicons name="card" size={22} color={Colors.light.tint} />
@@ -135,7 +136,7 @@ export default function ProfileScreen() {
 
                         <TouchableOpacity
                             style={styles.menuItem}
-                            onPress={navigateToFavoriteOrders}
+                            onPress={() => router.push('/profile/favorite-orders' as any)}
                         >
                             <View style={styles.menuItemIcon}>
                                 <FontAwesome5 name="pizza-slice" size={20} color={Colors.light.tint} />
@@ -173,12 +174,37 @@ export default function ProfileScreen() {
                                 thumbColor={specialOffersEnabled ? Colors.light.tint : '#f4f3f4'}
                             />
                         </View>
+
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => router.push('/profile/notifications' as any)}
+                        >
+                            <View style={styles.menuItemIcon}>
+                                <Ionicons name="notifications-outline" size={22} color={Colors.light.tint} />
+                            </View>
+                            <Text style={styles.menuItemText}>Notification Center</Text>
+                            <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => router.push('/profile/special-offers' as any)}
+                        >
+                            <View style={styles.menuItemIcon}>
+                                <Ionicons name="gift" size={22} color={Colors.light.tint} />
+                            </View>
+                            <Text style={styles.menuItemText}>View Special Offers</Text>
+                            <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                        </TouchableOpacity>
                     </View>
 
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>Support</Text>
 
-                        <TouchableOpacity style={styles.menuItem}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => router.push('/profile/help-center' as any)}
+                        >
                             <View style={styles.menuItemIcon}>
                                 <Ionicons name="help-circle" size={22} color={Colors.light.tint} />
                             </View>
@@ -186,7 +212,10 @@ export default function ProfileScreen() {
                             <Ionicons name="chevron-forward" size={20} color="#ccc" />
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.menuItem}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => router.push('/profile/contact-us' as any)}
+                        >
                             <View style={styles.menuItemIcon}>
                                 <MaterialIcons name="chat" size={22} color={Colors.light.tint} />
                             </View>
@@ -194,7 +223,10 @@ export default function ProfileScreen() {
                             <Ionicons name="chevron-forward" size={20} color="#ccc" />
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.menuItem}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => router.push('/profile/terms-conditions' as any)}
+                        >
                             <View style={styles.menuItemIcon}>
                                 <Ionicons name="document-text" size={22} color={Colors.light.tint} />
                             </View>
@@ -202,7 +234,10 @@ export default function ProfileScreen() {
                             <Ionicons name="chevron-forward" size={20} color="#ccc" />
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.menuItem}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => router.push('/profile/privacy-policy' as any)}
+                        >
                             <View style={styles.menuItemIcon}>
                                 <Ionicons name="shield" size={22} color={Colors.light.tint} />
                             </View>

@@ -4,64 +4,17 @@ import { ThemedView as View } from '@/components/ThemedView';
 import { ThemedText as Text } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { getImage } from '@/constants/ImagePlaceholders';
-
-interface MenuItem {
-    id: string;
-    name: string;
-    description: string;
-    price: string;
-    image: any;
-}
-
-const categories = [
-    { id: '1', name: 'Best Sellers' },
-    { id: '2', name: 'Premium' },
-    { id: '3', name: 'Traditional' },
-    { id: '4', name: 'Value Range' },
-    { id: '5', name: 'Vegan' },
-];
-
-const menuItems: MenuItem[] = [
-    {
-        id: '1',
-        name: 'Pepperoni Pizza',
-        description: 'Pepperoni, mozzarella, special tomato sauce',
-        price: '$15.99',
-        image: getImage('pizza1'),
-    },
-    {
-        id: '2',
-        name: 'Supreme Pizza',
-        description: 'Pepperoni, ham, beef, mushrooms, onions, capsicum, olives',
-        price: '$18.99',
-        image: getImage('pizza2'),
-    },
-    {
-        id: '3',
-        name: 'Hawaiian Pizza',
-        description: 'Ham, pineapple, mozzarella',
-        price: '$14.99',
-        image: getImage('pizza3'),
-    },
-    {
-        id: '4',
-        name: 'BBQ Meatlovers',
-        description: 'BBQ sauce, beef, pepperoni, ham, bacon, mozzarella',
-        price: '$19.99',
-        image: getImage('pizza4'),
-    },
-    {
-        id: '5',
-        name: 'Vegetarian',
-        description: 'Tomato, mushrooms, onions, capsicum, olives, mozzarella',
-        price: '$16.99',
-        image: getImage('pizza5'),
-    },
-];
+import { useRouter } from 'expo-router';
+import { menuCategories, menuItems, MenuItem } from '@/app/data';
 
 export default function MenuScreen() {
     const [selectedCategory, setSelectedCategory] = useState('1');
+    const router = useRouter();
+
+    // Filter menu items based on selected category
+    // Since the data doesn't have category on menuItems, we're just using the first 5 items for all categories
+    // In a real app, this would filter based on an actual category property
+    const filteredMenuItems = menuItems;
 
     const renderCategoryItem = ({ item }: { item: { id: string; name: string } }) => (
         <TouchableOpacity
@@ -83,14 +36,23 @@ export default function MenuScreen() {
     );
 
     const renderMenuItem = ({ item }: { item: MenuItem }) => (
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push({ pathname: '/(shop)/product-detail', params: { id: item.id } })}
+        >
             <Image source={item.image} style={styles.menuItemImage} />
             <View style={styles.menuItemContent}>
                 <Text style={styles.menuItemName}>{item.name}</Text>
                 <Text style={styles.menuItemDescription}>{item.description}</Text>
                 <View style={styles.menuItemFooter}>
                     <Text style={styles.menuItemPrice}>{item.price}</Text>
-                    <TouchableOpacity style={styles.addButton}>
+                    <TouchableOpacity
+                        style={styles.addButton}
+                        onPress={(e) => {
+                            e.stopPropagation();
+                            router.push({ pathname: '/(shop)/product-detail', params: { id: item.id } });
+                        }}
+                    >
                         <Ionicons name="add" size={20} color="#fff" />
                     </TouchableOpacity>
                 </View>
@@ -109,7 +71,7 @@ export default function MenuScreen() {
 
             <View style={styles.categoriesContainer}>
                 <FlatList
-                    data={categories}
+                    data={menuCategories}
                     renderItem={renderCategoryItem}
                     keyExtractor={item => item.id}
                     horizontal
@@ -119,9 +81,9 @@ export default function MenuScreen() {
             </View>
 
             <ScrollView style={styles.menuList}>
-                <Text style={styles.sectionTitle}>{categories.find(c => c.id === selectedCategory)?.name}</Text>
+                <Text style={styles.sectionTitle}>{menuCategories.find(c => c.id === selectedCategory)?.name}</Text>
                 <FlatList
-                    data={menuItems}
+                    data={filteredMenuItems}
                     renderItem={renderMenuItem}
                     keyExtractor={item => item.id}
                     scrollEnabled={false}

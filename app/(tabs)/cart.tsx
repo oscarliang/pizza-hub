@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
 import { ThemedView as View } from '@/components/ThemedView';
 import { ThemedText as Text } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { getImage } from '@/constants/ImagePlaceholders';
+import { deals } from '@/app/data';
 
 interface CartItem {
     id: string;
@@ -44,6 +45,7 @@ export default function CartScreen() {
     ]);
 
     const [promoCode, setPromoCode] = useState('');
+    const [appliedPromo, setAppliedPromo] = useState('');
     const [discount, setDiscount] = useState(0);
 
     const increaseQuantity = (id: string) => {
@@ -71,6 +73,41 @@ export default function CartScreen() {
     const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
     const deliveryFee = 5.99;
     const total = subtotal + deliveryFee - discount;
+
+    // Valid promo codes based on the deals data
+    const validPromoCodes: { [key: string]: number } = {
+        'BOGO': 15.99, // Buy one get one free - discount equals the price of a medium pepperoni
+        'LARGE30': 5.70, // 30% off a large pizza (calculated as 30% of a large pizza price)
+        'FREEBREAD': 4.99, // Free garlic bread
+    };
+
+    const applyPromoCode = () => {
+        const normalizedCode = promoCode.trim().toUpperCase();
+
+        if (!normalizedCode) {
+            Alert.alert('Error', 'Please enter a promo code');
+            return;
+        }
+
+        if (appliedPromo === normalizedCode) {
+            Alert.alert('Error', 'This promo code has already been applied');
+            return;
+        }
+
+        // Check if the code exists in our deals data
+        const isValidDealCode = Object.values(deals).some(deal => deal.code === normalizedCode);
+        const discountAmount = validPromoCodes[normalizedCode];
+
+        if (isValidDealCode && discountAmount) {
+            setDiscount(discountAmount);
+            setAppliedPromo(normalizedCode);
+            Alert.alert('Success', `Promo code "${normalizedCode}" applied successfully!`);
+        } else {
+            Alert.alert('Error', 'Invalid promo code');
+        }
+
+        setPromoCode('');
+    };
 
     return (
         <View style={styles.container}>
@@ -119,12 +156,39 @@ export default function CartScreen() {
                         <View style={styles.promoContainer}>
                             <View style={styles.promoInputContainer}>
                                 <FontAwesome name="ticket" size={18} color="#999" />
-                                <Text style={styles.promoPlaceholder}>Enter promo code</Text>
+                                <TextInput
+                                    style={styles.promoInput}
+                                    placeholder="Enter promo code"
+                                    placeholderTextColor="#999"
+                                    value={promoCode}
+                                    onChangeText={setPromoCode}
+                                />
                             </View>
-                            <TouchableOpacity style={styles.applyButton}>
+                            <TouchableOpacity
+                                style={styles.applyButton}
+                                onPress={applyPromoCode}
+                            >
                                 <Text style={styles.applyButtonText}>Apply</Text>
                             </TouchableOpacity>
                         </View>
+
+                        {appliedPromo ? (
+                            <View style={styles.appliedPromoContainer}>
+                                <View style={styles.appliedPromo}>
+                                    <Text style={styles.appliedPromoText}>
+                                        Code <Text style={styles.appliedPromoCode}>{appliedPromo}</Text> applied
+                                    </Text>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setAppliedPromo('');
+                                            setDiscount(0);
+                                        }}
+                                    >
+                                        <Ionicons name="close-circle" size={20} color={Colors.light.tint} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        ) : null}
 
                         <View style={styles.summaryContainer}>
                             <View style={styles.summaryRow}>
@@ -264,15 +328,16 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#f8f8f8',
         borderRadius: 8,
         paddingHorizontal: 12,
-        paddingVertical: 12,
-        marginRight: 12,
+        paddingVertical: 10,
     },
-    promoPlaceholder: {
+    promoInput: {
+        flex: 1,
         marginLeft: 8,
-        color: '#999',
+        fontSize: 14,
+        color: '#333',
     },
     applyButton: {
         backgroundColor: Colors.light.tint,
@@ -336,5 +401,25 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 16,
+    },
+    appliedPromoContainer: {
+        marginTop: 12,
+        marginBottom: 12,
+    },
+    appliedPromo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: Colors.light.tint + '10',
+        borderRadius: 8,
+        padding: 12,
+    },
+    appliedPromoText: {
+        fontSize: 14,
+        color: '#666',
+    },
+    appliedPromoCode: {
+        fontWeight: 'bold',
+        color: Colors.light.tint,
     },
 }); 

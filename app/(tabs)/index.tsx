@@ -5,70 +5,18 @@ import { ThemedText as Text } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { getImage } from '@/constants/ImagePlaceholders';
-
-interface PromotionItem {
-  id: string;
-  title: string;
-  image: any;
-  discount: string;
-}
-
-interface CategoryItem {
-  id: string;
-  name: string;
-  image: any;
-}
-
-const promotions: PromotionItem[] = [
-  {
-    id: '1',
-    title: 'Buy 1 Get 1 Free',
-    image: getImage('promotion1'),
-    discount: 'Use code: BOGO',
-  },
-  {
-    id: '2',
-    title: '30% Off on Large Pizzas',
-    image: getImage('promotion2'),
-    discount: 'Use code: LARGE30',
-  },
-  {
-    id: '3',
-    title: 'Free Garlic Bread',
-    image: getImage('promotion3'),
-    discount: 'On orders above $30',
-  },
-];
-
-const categories: CategoryItem[] = [
-  {
-    id: '1',
-    name: 'Pizza',
-    image: getImage('category-pizza'),
-  },
-  {
-    id: '2',
-    name: 'Sides',
-    image: getImage('category-sides'),
-  },
-  {
-    id: '3',
-    name: 'Drinks',
-    image: getImage('category-drinks'),
-  },
-  {
-    id: '4',
-    name: 'Desserts',
-    image: getImage('category-desserts'),
-  },
-];
+import { useRouter } from 'expo-router';
+import { homeCategories, promotions, CategoryItem, PromotionItem } from '@/app/data';
 
 export default function HomeScreen() {
   const [address, setAddress] = useState('123 Main St, Sydney');
+  const router = useRouter();
 
   const renderPromotionItem = ({ item }: { item: PromotionItem }) => (
-    <TouchableOpacity style={styles.promotionItem}>
+    <TouchableOpacity
+      style={styles.promotionItem}
+      onPress={() => router.push({ pathname: '/(shop)/deal-detail', params: { id: item.id } })}
+    >
       <Image source={item.image} style={styles.promotionImage} />
       <View style={styles.promotionContent}>
         <Text style={styles.promotionTitle}>{item.title}</Text>
@@ -78,7 +26,10 @@ export default function HomeScreen() {
   );
 
   const renderCategoryItem = ({ item }: { item: CategoryItem }) => (
-    <TouchableOpacity style={styles.categoryItem}>
+    <TouchableOpacity
+      style={styles.categoryItem}
+      onPress={() => router.push({ pathname: '/(shop)/category-detail', params: { id: item.id } })}
+    >
       <Image source={item.image} style={styles.categoryImage} />
       <Text style={styles.categoryName}>{item.name}</Text>
     </TouchableOpacity>
@@ -114,7 +65,7 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Categories</Text>
         <FlatList
-          data={categories}
+          data={homeCategories}
           renderItem={renderCategoryItem}
           keyExtractor={item => item.id}
           numColumns={2}
@@ -122,7 +73,10 @@ export default function HomeScreen() {
         />
       </View>
 
-      <TouchableOpacity style={styles.orderButton}>
+      <TouchableOpacity
+        style={styles.orderButton}
+        onPress={() => router.push('/(tabs)/menu')}
+      >
         <Text style={styles.orderButtonText}>Start Your Order</Text>
       </TouchableOpacity>
     </ScrollView>
